@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday!</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lato:wght@300;400;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --rose: #f43f6a;
+      --gold: #f9c84e;
+      --lavender: #c084fc;
+      --deep: #0d0520;
+      --mid: #1a0a38;
+      --surface: rgba(255,255,255,0.07);
+      --glow-rose: 0 0 40px rgba(244,63,106,0.5);
+      --glow-gold: 0 0 40px rgba(249,200,78,0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--deep);
+      color: #fff;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ===== BACKGROUND ===== */
+    #bg-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+
+    .bg-gradient {
+      position: fixed; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse at 20% 30%, #2d0b5a 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 70%, #3b0a2a 0%, transparent 60%),
+                  linear-gradient(160deg, #0d0520 0%, #1a0a38 50%, #0d0520 100%);
+    }
+
+    /* ===== STARS ===== */
+    .star {
+      position: fixed; border-radius: 50%; background: #fff;
+      animation: twinkle var(--dur) ease-in-out infinite alternate;
+      pointer-events: none; z-index: 0;
+    }
+    @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
+
+    /* ===== FLOATING SHAPES ===== */
+    .float-shape {
+      position: fixed; pointer-events: none; z-index: 1;
+      animation: floatUp var(--dur, 12s) ease-in-out infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.7; }
+      50%  { transform: translateY(-30px) rotate(10deg) scale(1.05); opacity: 1; }
+      100% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.7; }
+    }
+
+    /* ===== SECTIONS ===== */
+    .section { position: relative; z-index: 10; }
+
+    /* ===== GLASS CARD ===== */
+    .glass {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 28px;
+    }
+
+    .glass-bright {
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 28px;
+    }
+
+    /* ===== HERO TYPOGRAPHY ===== */
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-style: italic;
+      background: linear-gradient(135deg, #f9c84e 0%, #f43f6a 40%, #c084fc 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      line-height: 1.1;
+      animation: nameGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes nameGlow {
+      0%   { filter: drop-shadow(0 0 20px rgba(249,200,78,0.6)); }
+      50%  { filter: drop-shadow(0 0 40px rgba(244,63,106,0.8)); }
+      100% { filter: drop-shadow(0 0 25px rgba(192,132,252,0.7)); }
+    }
+
+    .hero-tag {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      color: #f9c84ecc;
+      letter-spacing: 0.03em;
+    }
+
+    .hero-sub {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      color: rgba(255,255,255,0.75);
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+    }
+
+    /* ===== TYPING CURSOR ===== */
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      background: var(--gold);
+      animation: blink 0.8s step-end infinite;
+      vertical-align: baseline;
+      border-radius: 2px;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 14px 36px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #f43f6a, #c084fc);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 30px rgba(244,63,106,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 16px 50px rgba(244,63,106,0.55); }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-primary::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .btn-primary:hover::after { opacity: 1; }
+
+    .btn-gold {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700; font-size: 0.95rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 12px 30px; border-radius: 50px; border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #f9c84e, #f97316);
+      color: #1a0a38;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 25px rgba(249,200,78,0.35);
+    }
+    .btn-gold:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 14px 40px rgba(249,200,78,0.55); }
+    .btn-gold:active { transform: scale(0.97); }
+
+    .btn-outline {
+      font-family: 'Lato', sans-serif; font-weight: 700;
+      font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 11px 28px; border-radius: 50px;
+      border: 1.5px solid rgba(192,132,252,0.5);
+      cursor: pointer; background: transparent;
+      color: #c084fc;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { background: rgba(192,132,252,0.12); border-color: #c084fc; transform: translateY(-2px); }
+
+    /* ===== BALLOON ===== */
+    .balloon-wrap { position: relative; display: inline-block; cursor: pointer; }
+    .balloon-svg { transition: transform 0.15s; }
+    .balloon-wrap:hover .balloon-svg { transform: scale(1.08); }
+    .balloon-wrap.popping .balloon-svg { animation: pop 0.4s forwards; }
+    @keyframes pop {
+      0%   { transform: scale(1); opacity: 1; }
+      30%  { transform: scale(1.4); opacity: 0.8; }
+      60%  { transform: scale(0.6) rotate(20deg); opacity: 0.4; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    /* ===== GIFT BOX ===== */
+    #gift-box { cursor: pointer; position: relative; }
+    #gift-lid {
+      transition: transform 0.7s cubic-bezier(0.34,1.56,0.64,1), opacity 0.5s;
+      transform-origin: center bottom;
+    }
+    #gift-box.opened #gift-lid {
+      transform: translateY(-80px) rotate(-25deg);
+      opacity: 0;
+    }
+    .gift-surprise {
+      opacity: 0;
+      transform: scale(0.6) translateY(20px);
+      transition: opacity 0.6s 0.4s, transform 0.6s 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    #gift-box.opened .gift-surprise {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    /* ===== CONFETTI ===== */
+    .confetti-piece {
+      position: fixed; pointer-events: none; z-index: 9999;
+      border-radius: 3px;
+      animation: confettiFall var(--dur) ease-in forwards;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(-20px) rotate(0deg) scaleX(1); opacity: 1; }
+      80%  { opacity: 1; }
+      100% { transform: translateY(100vh) rotate(var(--rot)) scaleX(var(--sx)); opacity: 0; }
+    }
+
+    /* ===== WISH MODAL ===== */
+    #wish-overlay {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(5,2,15,0.75);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    #wish-overlay.active { opacity: 1; pointer-events: all; }
+    #wish-card {
+      max-width: 500px; width: 90%;
+      padding: 40px 36px;
+      text-align: center;
+      transform: scale(0.8) translateY(30px);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
+      opacity: 0;
+    }
+    #wish-overlay.active #wish-card { transform: scale(1) translateY(0); opacity: 1; }
+    #wish-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.3rem, 4vw, 1.7rem);
+      line-height: 1.6;
+      color: #fff;
+      min-height: 100px;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    #wish-text.fade-out { opacity: 0; transform: translateY(-10px); }
+    #wish-text.fade-in  { opacity: 1; transform: translateY(0); }
+
+    /* ===== MESSAGE SECTION ===== */
+    .message-card {
+      box-shadow: 0 0 0 1px rgba(244,63,106,0.2),
+                  0 25px 80px rgba(0,0,0,0.5),
+                  inset 0 1px 0 rgba(255,255,255,0.1);
+      animation: borderPulse 4s ease-in-out infinite;
+    }
+    @keyframes borderPulse {
+      0%,100% { box-shadow: 0 0 0 1px rgba(244,63,106,0.2), 0 25px 80px rgba(0,0,0,0.5), 0 0 60px rgba(244,63,106,0.08), inset 0 1px 0 rgba(255,255,255,0.1); }
+      50%      { box-shadow: 0 0 0 1px rgba(192,132,252,0.35), 0 25px 80px rgba(0,0,0,0.5), 0 0 80px rgba(192,132,252,0.15), inset 0 1px 0 rgba(255,255,255,0.1); }
+    }
+
+    /* ===== REVEAL ANIMATION ===== */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== MUSIC BTN ===== */
+    #music-btn {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, #f43f6a, #c084fc);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 30px rgba(244,63,106,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: musicPulse 2.5s ease-in-out infinite;
+    }
+    #music-btn:hover { transform: scale(1.12); box-shadow: 0 12px 40px rgba(244,63,106,0.65); animation: none; }
+    @keyframes musicPulse { 0%,100% { box-shadow: 0 8px 30px rgba(244,63,106,0.45); } 50% { box-shadow: 0 8px 50px rgba(244,63,106,0.75), 0 0 0 8px rgba(244,63,106,0.1); } }
+
+    /* ===== DIVIDER ===== */
+    .gradient-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(192,132,252,0.4), rgba(244,63,106,0.4), rgba(249,200,78,0.4), transparent);
+      margin: 0 auto;
+      max-width: 600px;
+    }
+
+    /* ===== SPARKLE DOTS ===== */
+    .sparkle {
+      position: absolute; pointer-events: none;
+      animation: sparklePop 0.6s ease forwards;
+      border-radius: 50%;
+    }
+    @keyframes sparklePop {
+      0%   { transform: scale(0); opacity: 1; }
+      50%  { transform: scale(1.5); opacity: 0.8; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    /* ===== NUMBER COUNTER ===== */
+    .year-bubble {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, #f43f6a, #c084fc);
+      font-family: 'Playfair Display', serif; font-weight: 900;
+      font-size: 2rem; color: #fff;
+      box-shadow: 0 0 40px rgba(244,63,106,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+      animation: yearFloat 3s ease-in-out infinite alternate;
+    }
+    @keyframes yearFloat { 0% { transform: translateY(0) rotate(-3deg); } 100% { transform: translateY(-12px) rotate(3deg); } }
+
+    /* ===== SCROLL BAR ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--deep); }
+    ::-webkit-scrollbar-thumb { background: rgba(192,132,252,0.4); border-radius: 3px; }
+
+    /* ===== GALLERY PHOTOS (placeholder) ===== */
+    .memory-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .memory-card:hover { transform: translateY(-8px) rotate(-1deg); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+
+    /* ===== HEART TRAIL ===== */
+    .heart-trail {
+      position: fixed; pointer-events: none; z-index: 9998;
+      font-size: 1.2rem;
+      animation: heartFloat 1.2s ease-out forwards;
+    }
+    @keyframes heartFloat {
+      0%   { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-80px) scale(0.5); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======= BACKGROUND ======= -->
+<div class="bg-gradient"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- ======= FLOATING SHAPES ======= -->
+<div id="float-container" aria-hidden="true"></div>
+
+<!-- ======= MUSIC BUTTON ======= -->
+<button id="music-btn" title="Toggle Music" aria-label="Toggle music">
+  <svg id="music-icon" width="22" height="22" fill="none" viewBox="0 0 24 24">
+    <path d="M9 18V5l12-2v13" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="6" cy="18" r="3" stroke="#fff" stroke-width="2"/>
+    <circle cx="18" cy="16" r="3" stroke="#fff" stroke-width="2"/>
+  </svg>
+</button>
+
+<!-- ======= HERO SECTION ======= -->
+<section class="section min-h-screen flex flex-col items-center justify-center text-center px-6 py-20 relative overflow-hidden">
+
+  <!-- Balloons top area -->
+  <div id="balloons-hero" class="absolute top-0 left-0 w-full flex justify-around items-start pt-4 pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto">
+    <!-- Tag line -->
+    <div class="hero-tag mb-4 reveal" id="reveal-tag">
+      <span>A very special day for a very special soul</span>
+    </div>
+
+    <!-- Main heading -->
+    <h1 class="hero-name text-6xl sm:text-7xl md:text-8xl lg:text-9xl mb-6 reveal" id="reveal-heading" style="transition-delay:0.15s;">
+      <span id="typed-text"></span><span class="cursor" id="cursor-el"></span>
+    </h1>
+
+    <!-- Sub -->
+    <p class="hero-sub max-w-xl mx-auto mb-10 reveal" id="reveal-sub" style="transition-delay:0.3s;">
+      Today the universe paused just for you. Every star, every heartbeat, every gentle breeze
+      whispers your name in celebration. You deserve every beautiful thing life holds.
+    </p>
+
+    <!-- CTA Row -->
+    <div class="flex flex-wrap items-center justify-center gap-4 reveal" id="reveal-cta" style="transition-delay:0.45s;">
+      <button class="btn-primary" onclick="triggerConfetti(); createSparklesAround(this)">
+        Celebrate!
+      </button>
+      <button class="btn-outline" onclick="openWishModal()">
+        Get a Wish
+      </button>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="mt-16 reveal" id="reveal-scroll" style="transition-delay:0.6s;">
+      <div class="flex flex-col items-center gap-2 opacity-50">
+        <span style="font-family:'Lato',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.6);">Scroll to explore</span>
+        <div style="width:1.5px; height:40px; background:linear-gradient(to bottom, rgba(192,132,252,0.8), transparent);"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= GRADIENT DIVIDER ======= -->
+<div class="gradient-divider w-full max-w-2xl mx-auto reveal"></div>
+
+<!-- ======= MESSAGE SECTION ======= -->
+<section class="section py-24 px-6">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Section header -->
+    <div class="text-center mb-16 reveal">
+      <div class="hero-tag text-3xl mb-2">A Letter From the Heart</div>
+      <p style="font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.35);">written with love</p>
+    </div>
+
+    <!-- Message Card -->
+    <div class="glass message-card p-10 sm:p-14 reveal" style="transition-delay:0.2s;">
+      <!-- Quote mark -->
+      <div style="font-family:'Playfair Display',serif; font-size:6rem; line-height:0.5; color:rgba(244,63,106,0.25); font-weight:900; margin-bottom:1.5rem;">"</div>
+
+      <p style="font-family:'Lato',sans-serif; font-size:clamp(1rem,2.5vw,1.15rem); line-height:1.9; color:rgba(255,255,255,0.85); font-weight:300;">
+        On this beautiful day, I want you to know just how extraordinary you are.
+        Not because it's your birthday — though that is the best excuse to say it —
+        but because you show up every single day with a warmth that lights up every room you enter.
+      </p>
+      <br/>
+      <p style="font-family:'Lato',sans-serif; font-size:clamp(1rem,2.5vw,1.15rem); line-height:1.9; color:rgba(255,255,255,0.85); font-weight:300;">
+        You carry a kindness that is rare. A spirit that is irreplaceable.
+        The kind of laughter that makes everything feel a little lighter.
+        The kind of presence that makes people feel genuinely seen.
+      </p>
+      <br/>
+      <p style="font-family:'Lato',sans-serif; font-size:clamp(1rem,2.5vw,1.15rem); line-height:1.9; color:rgba(255,255,255,0.85); font-weight:300;">
+        May this year bring you everything you have poured into others:
+        love that is honest, joy that is uncontainable, and moments so beautiful
+        they take your breath away. You deserve nothing less than your wildest dreams — fulfilled.
+      </p>
+
+      <!-- Signature -->
+      <div class="mt-10 flex items-center gap-4">
+        <div style="height:1px; flex:1; background:linear-gradient(to right, rgba(244,63,106,0.5), transparent);"></div>
+        <span style="font-family:'Dancing Script',cursive; font-size:1.5rem; color:#f43f6a;">With all my love</span>
+        <div style="height:1px; flex:1; background:linear-gradient(to left, rgba(244,63,106,0.5), transparent);"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= BALLOONS + GIFT SECTION ======= -->
+<section class="section py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="text-center mb-16 reveal">
+      <div class="hero-tag text-3xl mb-2">Interactive Surprises</div>
+      <p style="font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.35);">tap &amp; play</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+      <!-- Balloons Card -->
+      <div class="glass p-10 text-center reveal" style="transition-delay:0.1s;">
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:0.5rem; color:rgba(255,255,255,0.9);">Pop the Balloons!</h3>
+        <p style="font-size:0.9rem; color:rgba(255,255,255,0.5); margin-bottom:2rem;">Click each balloon for a little burst of joy</p>
+
+        <div id="balloon-grid" class="flex flex-wrap justify-center gap-6"></div>
+        <button class="btn-outline mt-8" style="font-size:0.8rem;" onclick="resetBalloons()">Reset Balloons</button>
+      </div>
+
+      <!-- Gift Box Card -->
+      <div class="glass p-10 text-center reveal" style="transition-delay:0.25s;">
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:0.5rem; color:rgba(255,255,255,0.9);">Open Your Gift</h3>
+        <p style="font-size:0.9rem; color:rgba(255,255,255,0.5); margin-bottom:2rem;">Something special is waiting inside...</p>
+
+        <div id="gift-box" onclick="openGift()" class="relative mx-auto" style="width:140px; height:160px;">
+          <!-- Box base -->
+          <svg width="140" height="120" viewBox="0 0 140 120" fill="none" style="position:absolute; bottom:0;">
+            <rect x="5" y="30" width="130" height="90" rx="8" fill="#f43f6a" opacity="0.9"/>
+            <rect x="5" y="30" width="130" height="90" rx="8" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+            <rect x="60" y="30" width="20" height="90" fill="rgba(255,255,255,0.15)"/>
+            <rect x="5" y="50" width="130" height="6" fill="rgba(255,255,255,0.15)"/>
+          </svg>
+          <!-- Lid -->
+          <div id="gift-lid" style="position:absolute; top:0; left:50%; transform:translateX(-50%);">
+            <svg width="150" height="50" viewBox="0 0 150 50" fill="none">
+              <rect x="5" y="20" width="140" height="30" rx="6" fill="#c084fc"/>
+              <rect x="5" y="20" width="140" height="30" rx="6" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+              <rect x="65" y="20" width="20" height="30" fill="rgba(255,255,255,0.15)"/>
+              <!-- Bow -->
+              <ellipse cx="55" cy="18" rx="22" ry="14" fill="#f9c84e" opacity="0.9"/>
+              <ellipse cx="95" cy="18" rx="22" ry="14" fill="#f9c84e" opacity="0.9"/>
+              <circle cx="75" cy="18" r="10" fill="#f43f6a"/>
+              <circle cx="75" cy="18" r="5" fill="#f9c84e"/>
+            </svg>
+          </div>
+          <!-- Surprise message inside -->
+          <div class="gift-surprise" style="position:absolute; top:-40px; left:50%; transform:translateX(-50%); white-space:nowrap;">
+            <div style="background:linear-gradient(135deg,#f43f6a,#c084fc); border-radius:12px; padding:8px 16px; font-family:'Dancing Script',cursive; font-size:1rem; color:#fff; box-shadow: 0 8px 25px rgba(244,63,106,0.5);">
+              You are LOVED!
+            </div>
+          </div>
+        </div>
+
+        <p id="gift-text" style="margin-top:2.5rem; font-family:'Dancing Script',cursive; font-size:1.2rem; color:rgba(255,255,255,0.5); transition: all 0.5s; min-height:2rem;">
+          Click the box to reveal...
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ======= WISHES SECTION ======= -->
+<section class="section py-20 px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="hero-tag text-3xl mb-2">Birthday Wishes</div>
+      <p style="font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.35);">from the universe to you</p>
+    </div>
+
+    <!-- Year Display -->
+    <div class="flex justify-center mb-16 reveal">
+      <div class="glass-bright px-12 py-8 flex flex-col items-center gap-4" style="border-radius:28px;">
+        <p style="font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.4);">Another beautiful year</p>
+        <div class="year-bubble">+1</div>
+        <p style="font-family:'Dancing Script',cursive; font-size:1.3rem; color:rgba(255,255,255,0.7);">More adventures await you</p>
+      </div>
+    </div>
+
+    <!-- 3 Wish cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="glass p-7 text-center reveal" style="transition-delay:0.1s;">
+        <div style="width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#f43f6a,#f97316); display:inline-flex; align-items:center; justify-content:center; margin-bottom:1.2rem; box-shadow:0 8px 25px rgba(244,63,106,0.4);">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="rgba(255,255,255,0.9)"/></svg>
+        </div>
+        <h4 style="font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:0.8rem; color:#fff;">Endless Love</h4>
+        <p style="font-size:0.9rem; line-height:1.7; color:rgba(255,255,255,0.6); font-weight:300;">May your heart always be full — of people who adore you, moments that nourish you, and a love that holds you gently.</p>
+      </div>
+
+      <div class="glass p-7 text-center reveal" style="transition-delay:0.25s;">
+        <div style="width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#f9c84e,#f43f6a); display:inline-flex; align-items:center; justify-content:center; margin-bottom:1.2rem; box-shadow:0 8px 25px rgba(249,200,78,0.4);">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="rgba(255,255,255,0.9)"/></svg>
+        </div>
+        <h4 style="font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:0.8rem; color:#fff;">Boundless Joy</h4>
+        <p style="font-size:0.9rem; line-height:1.7; color:rgba(255,255,255,0.6); font-weight:300;">May laughter find you in ordinary places, and may every single morning feel like a gift worth unwrapping slowly.</p>
+      </div>
+
+      <div class="glass p-7 text-center reveal" style="transition-delay:0.4s;">
+        <div style="width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#c084fc,#60a5fa); display:inline-flex; align-items:center; justify-content:center; margin-bottom:1.2rem; box-shadow:0 8px 25px rgba(192,132,252,0.4);">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" fill="rgba(255,255,255,0.9)"/></svg>
+        </div>
+        <h4 style="font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:0.8rem; color:#fff;">Wildest Dreams</h4>
+        <p style="font-size:0.9rem; line-height:1.7; color:rgba(255,255,255,0.6); font-weight:300;">May every door you knock on swing wide open, and may you realize just how capable and deserving you truly are.</p>
+      </div>
+    </div>
+
+    <!-- Get random wish button -->
+    <div class="text-center mt-12 reveal" style="transition-delay:0.5s;">
+      <button class="btn-gold" onclick="openWishModal()">
+        Receive a Special Wish
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ======= CONFETTI SECTION ======= -->
+<section class="section py-20 px-6">
+  <div class="max-w-2xl mx-auto text-center">
+    <div class="glass-bright p-12 sm:p-16 reveal" style="border-radius:32px;">
+      <div style="font-family:'Dancing Script',cursive; font-size:clamp(1.8rem,5vw,2.8rem); color:#fff; margin-bottom:1.2rem; line-height:1.3;">
+        Make a Wish &amp; Celebrate!
+      </div>
+      <p style="font-size:1rem; color:rgba(255,255,255,0.55); margin-bottom:2.5rem; line-height:1.7; font-weight:300;">
+        Close your eyes, hold a wish in your heart, then press the button.<br/>
+        Let the confetti carry it to the stars.
+      </p>
+      <button class="btn-primary" style="font-size:1.1rem; padding:16px 48px;" onclick="megaConfetti(); createSparklesAround(this)">
+        Send My Wish
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ======= FOOTER ======= -->
+<footer class="section py-16 px-6 text-center">
+  <div class="gradient-divider mb-12"></div>
+  <div style="font-family:'Dancing Script',cursive; font-size:clamp(1.4rem,4vw,2rem); color:rgba(255,255,255,0.7); margin-bottom:0.8rem;">
+    Happy Birthday, Beautiful Soul
+  </div>
+  <p style="font-size:0.85rem; color:rgba(255,255,255,0.25); letter-spacing:0.12em; text-transform:uppercase;">Made with love · Just for you</p>
+</footer>
+
+<!-- ======= WISH MODAL ======= -->
+<div id="wish-overlay" onclick="closeWishFromOverlay(event)">
+  <div class="glass-bright" id="wish-card">
+    <div style="font-family:'Dancing Script',cursive; font-size:1rem; color:rgba(249,200,78,0.7); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1.5rem;">A Wish For You</div>
+
+    <div id="wish-text" class="fade-in"></div>
+
+    <div class="flex flex-wrap justify-center gap-3 mt-8">
+      <button class="btn-primary" style="font-size:0.85rem; padding:10px 24px;" onclick="nextWish()">Another Wish</button>
+      <button class="btn-outline" style="font-size:0.85rem; padding:9px 22px;" onclick="closeWishModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= JAVASCRIPT ======= -->
+<script>
+  /* ========== STARS ========== */
+  (function() {
+    const count = 120;
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      const dur = (Math.random() * 3 + 2) + 's';
+      s.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}vw; top:${Math.random()*100}vh;
+        --dur:${dur};
+        animation-delay:${(Math.random()*4)}s;
+        opacity:${Math.random()*0.7+0.1};
+      `;
+      document.body.appendChild(s);
+    }
+  })();
+
+  /* ========== FLOATING SHAPES ========== */
+  (function() {
+    const container = document.getElementById('float-container');
+    const shapes = [
+      { html: '<svg width="28" height="36" viewBox="0 0 28 36" fill="none"><ellipse cx="14" cy="16" rx="13" ry="15" fill="#f43f6a" opacity="0.75"/><line x1="14" y1="31" x2="14" y2="36" stroke="#f43f6a" stroke-width="1.5" opacity="0.6"/></svg>', count: 6, colors: [] },
+      { html: '<svg width="22" height="20" viewBox="0 0 22 20" fill="none"><path d="M11 18L2.5 9.5C1 8 1 5.5 2.5 4 4 2.5 6.5 2.5 8 4L11 7l3-3c1.5-1.5 4-1.5 5.5 0 1.5 1.5 1.5 4 0 5.5L11 18z" fill="#f43f6a" opacity="0.6"/></svg>', count: 5 },
+      { html: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#f9c84e" opacity="0.5"/></svg>', count: 8 },
+      { html: '<svg width="12" height="12" viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9.2,11 6,9.3 2.8,11 3.5,7.5 1,5 4.5,4.5" fill="#c084fc" opacity="0.6"/></svg>', count: 7 }
+    ];
+    const picks = [
+      '#f43f6a','#c084fc','#f9c84e','#60a5fa','#34d399'
+    ];
+    shapes.forEach(sh => {
+      for (let i = 0; i < sh.count; i++) {
+        const wrap = document.createElement('div');
+        wrap.className = 'float-shape';
+        wrap.innerHTML = sh.html;
+        const dur = (Math.random()*8+8)+'s';
+        wrap.style.cssText = `
+          left:${Math.random()*95}vw;
+          top:${Math.random()*90}vh;
+          --dur:${dur};
+          animation-delay:-${(Math.random()*8)}s;
+          transform: scale(${Math.random()*0.6+0.6});
+        `;
+        container.appendChild(wrap);
+      }
+    });
+  })();
+
+  /* ========== TYPING ANIMATION ========== */
+  const typedEl = document.getElementById('typed-text');
+  const cursorEl = document.getElementById('cursor-el');
+  const fullText = 'Happy Birthday';
+  let idx = 0;
+  function type() {
+    if (idx <= fullText.length) {
+      typedEl.textContent = fullText.slice(0, idx);
+      idx++;
+      setTimeout(type, idx === 1 ? 800 : 90 + Math.random()*60);
+    } else {
+      cursorEl.style.animation = 'blink 0.8s step-end infinite';
+    }
+  }
+  setTimeout(type, 600);
+
+  /* ========== REVEAL ON SCROLL ========== */
+  const revealEls = document.querySelectorAll('.reveal');
+  function checkReveal() {
+    revealEls.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.92) el.classList.add('visible');
+    });
+  }
+  window.addEventListener('scroll', checkReveal, { passive: true });
+  setTimeout(checkReveal, 200);
+
+  /* ========== CONFETTI ========== */
+  const confettiColors = ['#f43f6a','#f9c84e','#c084fc','#60a5fa','#34d399','#fb923c','#fff','#e879f9'];
+  function spawnConfetti(x, y, count = 30) {
+    for (let i = 0; i < count; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      const size = Math.random()*8+4;
+      const color = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+      const startX = (x ?? Math.random()*window.innerWidth);
+      const startY = (y ?? -10);
+      const angle = Math.random()*360;
+      const sx = Math.random() > 0.5 ? 1 : -1;
+      const dur = (Math.random()*2+1.5)+'s';
+      piece.style.cssText = `
+        left:${startX + (Math.random()-0.5)*160}px;
+        top:${startY}px;
+        width:${size}px; height:${size*(Math.random()*1.5+0.5)}px;
+        background:${color};
+        --rot:${angle}deg; --sx:${sx};
+        --dur:${dur};
+        animation-delay:${Math.random()*0.4}s;
+        border-radius:${Math.random()>0.5?'50%':'3px'};
+      `;
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 3500);
+    }
+  }
+
+  function triggerConfetti() {
+    for (let col = 0; col < 6; col++) {
+      setTimeout(() => spawnConfetti(Math.random()*window.innerWidth, -10, 18), col*120);
+    }
+  }
+
+  function megaConfetti() {
+    for (let col = 0; col < 16; col++) {
+      setTimeout(() => spawnConfetti(Math.random()*window.innerWidth, -10, 25), col*80);
+    }
+  }
+
+  /* ========== SPARKLES ========== */
+  function createSparklesAround(el) {
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width/2 + window.scrollX;
+    const cy = rect.top + rect.height/2 + window.scrollY;
+    for (let i = 0; i < 8; i++) {
+      const sp = document.createElement('div');
+      sp.className = 'sparkle';
+      const angle = (i/8)*Math.PI*2;
+      const dist = 40 + Math.random()*30;
+      const size = 8 + Math.random()*10;
+      const colors = ['#f9c84e','#f43f6a','#c084fc','#fff'];
+      sp.style.cssText = `
+        left:${cx + Math.cos(angle)*dist - size/2}px;
+        top:${cy + Math.sin(angle)*dist - size/2}px;
+        width:${size}px; height:${size}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        animation-delay:${Math.random()*0.2}s;
+      `;
+      document.body.appendChild(sp);
+      setTimeout(() => sp.remove(), 800);
+    }
+  }
+
+  /* ========== BALLOONS ========== */
+  const balloonColors = [
+    ['#f43f6a','#c0255e'],
+    ['#f9c84e','#e6a810'],
+    ['#c084fc','#9333ea'],
+    ['#60a5fa','#2563eb'],
+    ['#34d399','#059669'],
+    ['#fb923c','#ea580c']
+  ];
+
+  function makeBalloonSVG(color1, color2) {
+    return `<svg class="balloon-svg" width="60" height="80" viewBox="0 0 60 80" fill="none">
+      <ellipse cx="30" cy="30" rx="28" ry="28" fill="${color1}"/>
+      <ellipse cx="22" cy="20" rx="8" ry="6" fill="rgba(255,255,255,0.25)"/>
+      <polygon points="30,58 26,64 34,64" fill="${color2}"/>
+      <line x1="30" y1="64" x2="30" y2="78" stroke="${color2}" stroke-width="1.5" stroke-dasharray="3 2"/>
+    </svg>`;
+  }
+
+  function createBalloon(container, colorIdx) {
+    const ci = colorIdx % balloonColors.length;
+    const [c1, c2] = balloonColors[ci];
+    const wrap = document.createElement('div');
+    wrap.className = 'balloon-wrap';
+    wrap.innerHTML = makeBalloonSVG(c1, c2);
+    wrap.dataset.color = ci;
+    wrap.onclick = () => popBalloon(wrap);
+    container.appendChild(wrap);
+  }
+
+  function popBalloon(wrap) {
+    if (wrap.classList.contains('popping')) return;
+    wrap.classList.add('popping');
+    const rect = wrap.getBoundingClientRect();
+    spawnConfetti(rect.left + rect.width/2, rect.top + rect.height/2, 18);
+    setTimeout(() => { wrap.style.visibility = 'hidden'; }, 420);
+  }
+
+  function resetBalloons() {
+    const grid = document.getElementById('balloon-grid');
+    grid.innerHTML = '';
+    for (let i = 0; i < 6; i++) createBalloon(grid, i);
+  }
+
+  /* Hero balloons */
+  (function() {
+    const hb = document.getElementById('balloons-hero');
+    for (let i = 0; i < 7; i++) {
+      const ci = i % balloonColors.length;
+      const [c1, c2] = balloonColors[ci];
+      const wrap = document.createElement('div');
+      wrap.className = 'balloon-wrap';
+      wrap.style.cssText = `pointer-events:all; opacity:0.6; transform:scale(${0.7+Math.random()*0.5}); margin-top:${Math.random()*-20}px;`;
+      wrap.innerHTML = makeBalloonSVG(c1, c2);
+      wrap.onclick = () => popBalloon(wrap);
+      hb.appendChild(wrap);
+    }
+  })();
+
+  /* Init grid */
+  resetBalloons();
+
+  /* ========== GIFT BOX ========== */
+  const giftMessages = [
+    "You are the most precious gift in everyone's life!",
+    "May all your dreams come true this year!",
+    "Your smile is the world's best decoration!",
+    "You deserve a lifetime of beautiful surprises!",
+    "Today and always — you are deeply loved!"
+  ];
+  let giftOpened = false;
+
+  function openGift() {
+    if (giftOpened) return;
+    giftOpened = true;
+    const box = document.getElementById('gift-box');
+    box.classList.add('opened');
+    const txt = document.getElementById('gift-text');
+    const msg = giftMessages[Math.floor(Math.random()*giftMessages.length)];
+    setTimeout(() => {
+      txt.textContent = msg;
+      txt.style.color = '#f9c84e';
+      txt.style.fontFamily = "'Dancing Script', cursive";
+      txt.style.fontSize = '1.3rem';
+    }, 500);
+    triggerConfetti();
+    createSparklesAround(box);
+  }
+
+  /* ========== WISH MODAL ========== */
+  const wishes = [
+    "May every single day of this new year be overflowing with moments that make your heart sing and your spirit soar.",
+    "You were made for beautiful things. May this birthday mark the beginning of your most magnificent chapter yet.",
+    "Here's to you — the one who shows up, the one who shines, the one who makes life a little more magical for everyone.",
+    "May you laugh so hard your cheeks ache, love so deeply you feel it everywhere, and receive everything you give so freely.",
+    "The world is better because you are in it. Don't ever doubt that for a single second. Happy Birthday.",
+    "May this year hold adventures you haven't imagined yet, and love that surpasses everything you've known before.",
+    "You are not just a year older — you are a year braver, a year wiser, and a thousand times more beautiful.",
+    "Wishing you a heart full of gratitude, a life full of wonder, and a year that exceeds your most hopeful dreams."
+  ];
+  let wishIdx = 0;
+
+  function openWishModal() {
+    wishIdx = Math.floor(Math.random() * wishes.length);
+    const overlay = document.getElementById('wish-overlay');
+    const wishText = document.getElementById('wish-text');
+    wishText.textContent = wishes[wishIdx];
+    wishText.classList.remove('fade-out');
+    wishText.classList.add('fade-in');
+    overlay.classList.add('active');
+  }
+
+  function closeWishModal() {
+    document.getElementById('wish-overlay').classList.remove('active');
+  }
+
+  function closeWishFromOverlay(e) {
+    if (e.target === document.getElementById('wish-overlay')) closeWishModal();
+  }
+
+  function nextWish() {
+    const wishText = document.getElementById('wish-text');
+    wishText.classList.remove('fade-in');
+    wishText.classList.add('fade-out');
+    setTimeout(() => {
+      wishIdx = (wishIdx + 1) % wishes.length;
+      wishText.textContent = wishes[wishIdx];
+      wishText.classList.remove('fade-out');
+      wishText.classList.add('fade-in');
+    }, 320);
+    spawnConfetti(window.innerWidth/2, window.innerHeight/2, 20);
+  }
+
+  /* ========== MUSIC TOGGLE (placeholder) ========== */
+  let musicPlaying = false;
+  const musicBtn = document.getElementById('music-btn');
+  const musicIcon = document.getElementById('music-icon');
+  const pauseIconSVG = `<svg width="22" height="22" fill="none" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1" fill="#fff"/><rect x="14" y="4" width="4" height="16" rx="1" fill="#fff"/></svg>`;
+  const playIconSVG = `<svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke="#fff" stroke-width="2"/><circle cx="18" cy="16" r="3" stroke="#fff" stroke-width="2"/></svg>`;
+
+  musicBtn.addEventListener('click', function() {
+    musicPlaying = !musicPlaying;
+    musicIcon.innerHTML = musicPlaying ? pauseIconSVG : playIconSVG;
+    musicBtn.style.background = musicPlaying
+      ? 'linear-gradient(135deg, #f9c84e, #f97316)'
+      : 'linear-gradient(135deg, #f43f6a, #c084fc)';
+    if (musicPlaying) triggerConfetti();
+    // Actual audio integration: replace below with real audio element
+    // e.g. audio.play() / audio.pause()
+  });
+
+  /* ========== HEART TRAIL ON MOVE ========== */
+  let lastHeart = 0;
+  document.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastHeart < 200) return;
+    lastHeart = now;
+    if (Math.random() > 0.35) return;
+    const heart = document.createElement('div');
+    heart.className = 'heart-trail';
+    const colors = ['#f43f6a','#f9c84e','#c084fc'];
+    heart.style.cssText = `left:${e.clientX - 8}px; top:${e.clientY - 8}px; color:${colors[Math.floor(Math.random()*colors.length)]};`;
+    heart.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/></svg>`;
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1300);
+  });
+
+  /* ========== INITIAL CONFETTI (page load) ========== */
+  window.addEventListener('load', () => {
+    setTimeout(() => triggerConfetti(), 1200);
+    setTimeout(checkReveal, 100);
+  });
+
+  /* ========== KEYBOARD ESC for modal ========== */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeWishModal();
+  });
+</script>
+</body>
+</html>
+```
